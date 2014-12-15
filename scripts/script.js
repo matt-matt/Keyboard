@@ -25,7 +25,7 @@ var MontageBoard = {
 		} else {
 			$('#backgroundLeft').show();
 			$('#backgroundRight').show();
-			currNote = MontageBoard.hornSounds[note].cloneNode();
+			currNote = MontageBoard.pianoSounds[note].cloneNode();
 		}
 
 		if (key === 'click') {
@@ -122,20 +122,20 @@ var MontageBoard = {
 	MontageBoard.smokeWeed = new Audio(smokeWeed + audioTag);
 	MontageBoard.hitmarker = new Audio(hitmarker + audioTag);
 
-	MontageBoard.hornSounds = [
-		new Audio("sounds/horn/horn_c" + audioTag),
-		new Audio("sounds/horn/horn_c_sharp" + audioTag),
-		new Audio("sounds/horn/horn_d" + audioTag),
-		new Audio("sounds/horn/horn_d_sharp" + audioTag),
-		new Audio("sounds/horn/horn_e" + audioTag),
-		new Audio("sounds/horn/horn_f" + audioTag),
-		new Audio("sounds/horn/horn_f_sharp" + audioTag),
-		new Audio("sounds/horn/horn_g" + audioTag),
-		new Audio("sounds/horn/horn_g_sharp" + audioTag),
-		new Audio("sounds/horn/horn_a" + audioTag),
-		new Audio("sounds/horn/horn_a_sharp" + audioTag),
-		new Audio("sounds/horn/horn_b" + audioTag),
-		new Audio("sounds/horn/horn_c_high" + audioTag)
+	MontageBoard.pianoSounds = [
+		new Audio("sounds/piano/piano_c" + audioTag),
+		new Audio("sounds/piano/piano_c_sharp" + audioTag),
+		new Audio("sounds/piano/piano_d" + audioTag),
+		new Audio("sounds/piano/piano_d_sharp" + audioTag),
+		new Audio("sounds/piano/piano_e" + audioTag),
+		new Audio("sounds/piano/piano_f" + audioTag),
+		new Audio("sounds/piano/piano_f_sharp" + audioTag),
+		new Audio("sounds/piano/piano_g" + audioTag),
+		new Audio("sounds/piano/piano_g_sharp" + audioTag),
+		new Audio("sounds/piano/piano_a" + audioTag),
+		new Audio("sounds/piano/piano_a_sharp" + audioTag),
+		new Audio("sounds/piano/piano_b" + audioTag),
+		new Audio("sounds/piano/piano_c_high" + audioTag)
 	];
 	MontageBoard.weedSounds = [
 		new Audio("sounds/weed/weed_c" + audioTag),
