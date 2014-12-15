@@ -1,40 +1,40 @@
-var MontageBoard = {
+var MeganBoard = {
 	switchMode: function() {
-		$('#weedCheck').blur();
+		$('#qualityCheck').blur();
 
-		var weedChecked = $('#weedCheck').prop('checked');
+		var qualityChecked = $('#qualityCheck').prop('checked');
 		var userAgent = navigator.userAgent.toLowerCase();
 
-		if (weedChecked && !(userAgent.indexOf('chrome') <= -1 && userAgent.indexOf('safari') > -1)) {
-			$('h1').addClass('weedTitle');
+		if (qualityChecked && !(userAgent.indexOf('chrome') <= -1 && userAgent.indexOf('safari') > -1)) {
+			$('h1').addClass('specialTitle');
 		} else {
-			$('h1').removeClass('weedTitle');
+			$('h1').removeClass('specialTitle');
 		}
 	},
 
 	playNote: function(note, key) {
 		var currNote;
-		var isWeed = $('#weedCheck').prop('checked');
+		var isHQ = $('#qualityCheck').prop('checked');
 		var duration = $('#duration').slider('values', 0);
 
 		$('#' + note).addClass('button-clicked');
 
-		if (isWeed) {
-			$('#backgroundSnoop').show();
-			currNote = MontageBoard.weedSounds[note].cloneNode();
-		} else {
+		if (isHQ) {
 			$('#backgroundLeft').show();
 			$('#backgroundRight').show();
-			currNote = MontageBoard.pianoSounds[note].cloneNode();
+			currNote = MeganBoard.HQPianoSounds[note].cloneNode();
+		} else {
+			currNote = MeganBoard.LQPianoSounds[note].cloneNode();
 		}
-
+		
+		
 		if (key === 'click') {
 			$('#' + note).mouseup(function() {
-				MontageBoard.stopNoteVisual(note, isWeed);
+				MeganBoard.stopNoteVisual(note, isHQ);
 			});
 		} else {
 			Mousetrap.bind(key, function() {
-				MontageBoard.stopNoteVisual(note, isWeed);
+				MeganBoard.stopNoteVisual(note, isHQ);
 			}, 'keyup');
 		}
 
@@ -46,111 +46,82 @@ var MontageBoard = {
 		currNote.play();
 	},
 
-	stopNoteVisual: function(noteId, isWeed) {
-		if (isWeed) {
-			$('#backgroundSnoop').hide();
-		} else {
-			$('#backgroundLeft').hide();
-			$('#backgroundRight').hide();
-		}
-
+	stopNoteVisual: function(noteId, isHQ) {
+		$('#backgroundLeft').hide();
+		$('#backgroundRight').hide();
+		
 		$('#' + noteId).removeClass('button-clicked');
 	},
 
 	playSound: function(sound) {
-		if (sound === 'intervention') {
-			$('#intervention').show();
-
-			Mousetrap.bind('ctrl', function() {
-				$('#intervention').hide();
-			}, 'keyup');
-
-			Mousetrap.bind('command', function() {
-				$('#intervention').hide();
-			}, 'keyup');
-
-			MontageBoard.interventionFire.currentTime = 0;
-			MontageBoard.interventionFire.play();
-		} else if (sound === 'hitmarker') {
-			var $hitmarker = $('<img src="images/hitmarker.png" width="45px" />');
+		  if (sound === 'emoji') {
+			var $emoji = $('<img src="images/emoji.png" width="45px" />');
 			var left = Math.random() * 100;
 			var top = Math.random() * 100;
 
-			$hitmarker.css('position', 'absolute');
-			$hitmarker.css('left', left + '%');
-			$hitmarker.css('top', top + '%');
-			$hitmarker.css('z-index', 3);
+			$emoji.css('position', 'absolute');
+			$emoji.css('left', left + '%');
+			$emoji.css('top', top + '%');
+			$emoji.css('z-index', 3);
 
-			$('body').append($hitmarker);
+			$('body').append($emoji);
 
-			MontageBoard.hitmarker.currentTime = 0;
-			MontageBoard.hitmarker.addEventListener('ended', function() {
-				$hitmarker.remove();
+			MeganBoard.emoji.currentTime = 0;
+			MeganBoard.emoji.addEventListener('ended', function() {
+				$emoji.remove();
 			}, false);
 
-			MontageBoard.hitmarker.play();
-		} else if (sound === 'smokeWeed') {
-			$('#backgroundSnoop').show();
-
-			MontageBoard.smokeWeed.currentTime = 0;
-			MontageBoard.smokeWeed.addEventListener('ended', function() {
-				$('#backgroundSnoop').hide();
-			}, false);
-
-			MontageBoard.smokeWeed.play();
+			MeganBoard.emoji.play();
 		}
 	}
 };
 
 (function() {
-	var audioTag = ".mp3";
-	var interventionFire = "sounds/intervention_fire";
-	var smokeWeed = "sounds/smoke_weed";
-	var hitmarker = "sounds/hitmarker";
+	var hqaudiotag = ".mp3";
+	var lqaudiotag = ".ogg";
+	var emoji = "sounds/emoji";
 	var userAgent = navigator.userAgent.toLowerCase();
 
 	if (userAgent.indexOf('firefox') > -1) {
-	     hitmarker = "sounds/hitmarker_alt";
-	     audioTag = "" + audioTag;
+	     emoji = "sounds/emoji_alt";
+	     hqaudiotag = "" + hqaudiotag;
 	}
 
 	if (userAgent.indexOf('chrome') <= -1 && userAgent.indexOf('safari') > -1) {
 		alert("Consider switching to a different browser as HTML5 audio has some latency issues with Safari.");
 	}
 
-	MontageBoard.interventionFire = new Audio(interventionFire + audioTag);
-	MontageBoard.smokeWeed = new Audio(smokeWeed + audioTag);
-	MontageBoard.hitmarker = new Audio(hitmarker + audioTag);
+	MeganBoard.emoji = new Audio(emoji + hqaudiotag);
 
-	MontageBoard.pianoSounds = [
-		new Audio("sounds/piano/piano_c" + audioTag),
-		new Audio("sounds/piano/piano_c_sharp" + audioTag),
-		new Audio("sounds/piano/piano_d" + audioTag),
-		new Audio("sounds/piano/piano_d_sharp" + audioTag),
-		new Audio("sounds/piano/piano_e" + audioTag),
-		new Audio("sounds/piano/piano_f" + audioTag),
-		new Audio("sounds/piano/piano_f_sharp" + audioTag),
-		new Audio("sounds/piano/piano_g" + audioTag),
-		new Audio("sounds/piano/piano_g_sharp" + audioTag),
-		new Audio("sounds/piano/piano_a" + audioTag),
-		new Audio("sounds/piano/piano_a_sharp" + audioTag),
-		new Audio("sounds/piano/piano_b" + audioTag),
-		new Audio("sounds/piano/piano_c_high" + audioTag)
+	MeganBoard.HQPianoSounds = [
+		new Audio("sounds/piano/piano_c" + hqaudiotag),
+		new Audio("sounds/piano/piano_c_sharp" + hqaudiotag),
+		new Audio("sounds/piano/piano_d" + hqaudiotag),
+		new Audio("sounds/piano/piano_d_sharp" + hqaudiotag),
+		new Audio("sounds/piano/piano_e" + hqaudiotag),
+		new Audio("sounds/piano/piano_f" + hqaudiotag),
+		new Audio("sounds/piano/piano_f_sharp" + hqaudiotag),
+		new Audio("sounds/piano/piano_g" + hqaudiotag),
+		new Audio("sounds/piano/piano_g_sharp" + hqaudiotag),
+		new Audio("sounds/piano/piano_a" + hqaudiotag),
+		new Audio("sounds/piano/piano_a_sharp" + hqaudiotag),
+		new Audio("sounds/piano/piano_b" + hqaudiotag),
+		new Audio("sounds/piano/piano_c_high" + hqaudiotag)
 	];
-	MontageBoard.weedSounds = [
-		new Audio("sounds/weed/weed_c" + audioTag),
-		new Audio("sounds/weed/weed_c_sharp" + audioTag),
-		new Audio("sounds/weed/weed_d" + audioTag),
-		new Audio("sounds/weed/weed_d_sharp" + audioTag),
-		new Audio("sounds/weed/weed_e" + audioTag),
-		new Audio("sounds/weed/weed_f" + audioTag),
-		new Audio("sounds/weed/weed_f_sharp" + audioTag),
-		new Audio("sounds/weed/weed_g" + audioTag),
-		new Audio("sounds/weed/weed_g_sharp" + audioTag),
-		new Audio("sounds/weed/weed_a" + audioTag),
-		new Audio("sounds/weed/weed_a_sharp" + audioTag),
-		new Audio("sounds/weed/weed_b" + audioTag),
-		new Audio("sounds/weed/weed_c_high" + audioTag)
+	MeganBoard.LQPianoSounds = [
+		new Audio("sounds/piano/piano_c" + lqaudiotag),
+		new Audio("sounds/piano/piano_c_sharp" + lqaudiotag),
+		new Audio("sounds/piano/piano_d" + lqaudiotag),
+		new Audio("sounds/piano/piano_d_sharp" + lqaudiotag),
+		new Audio("sounds/piano/piano_e" + lqaudiotag),
+		new Audio("sounds/piano/piano_f" + lqaudiotag),
+		new Audio("sounds/piano/piano_f_sharp" + lqaudiotag),
+		new Audio("sounds/piano/piano_g" + lqaudiotag),
+		new Audio("sounds/piano/piano_g_sharp" + lqaudiotag),
+		new Audio("sounds/piano/piano_a" + lqaudiotag),
+		new Audio("sounds/piano/piano_a_sharp" + lqaudiotag),
+		new Audio("sounds/piano/piano_b" + lqaudiotag),
+		new Audio("sounds/piano/piano_c_high" + lqaudiotag)
 	];
 
 	$(document).ready(function() {
@@ -164,16 +135,16 @@ var MontageBoard = {
 			$('#helpBackground').fadeIn(500);
 		});
 
-		$('#weedCheck').change(function() {
-			$('#weedCheck').trigger('blur');
-			MontageBoard.switchMode();
+		$('#qualityCheck').change(function() {
+			$('#qualityCheck').trigger('blur');
+			MeganBoard.switchMode();
 		});
 
 		$('#duration').slider({
 			min: 0.00, 
-			max: 1.00, 
-			step: 0.01, 
-			value: 0.25,
+			max: 16.00, 
+			step: 1.00, 
+			value: 15.00,
 			slide: function(event, ui) {
 				var value = $('#duration').slider('values', 0);
 				if (value.toString().length == 3) {
@@ -188,7 +159,7 @@ var MontageBoard = {
 
 		$('button').mousedown(function() {
 			var note = parseInt($(this).attr('id'));
-			MontageBoard.playNote(note, 'click');
+			MeganBoard.playNote(note, 'click');
 		});
 
 		$('#keyboard').fadeIn(1000);
