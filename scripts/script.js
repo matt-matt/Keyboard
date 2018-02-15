@@ -20,8 +20,6 @@ var MeganBoard = {
 		$('#' + note).addClass('button-clicked');
 
 		if (isHQ) {
-			$('#backgroundLeft').show();
-			$('#backgroundRight').show();
 			currNote = MeganBoard.HQPianoSounds[note].cloneNode();
 		} else {
 			currNote = MeganBoard.LQPianoSounds[note].cloneNode();
@@ -47,8 +45,6 @@ var MeganBoard = {
 	},
 
 	stopNoteVisual: function(noteId, isHQ) {
-		$('#backgroundLeft').hide();
-		$('#backgroundRight').hide();
 		
 		$('#' + noteId).removeClass('button-clicked');
 	},
